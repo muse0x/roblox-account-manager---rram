@@ -97,4 +97,4 @@ gpl-3.0, inherited from the original project. see [LICENSE](LICENSE). not affili
 
 original project: [ic3w0lf22](https://github.com/ic3w0lf22/Roblox-Account-Manager).  
 intermediate reimagined fork: [bruhger12](https://github.com/bruhger12/Roblox-Account-Manager-Reimagined).  
-rram fork and ui pass: this repository ( rram means remaster roblox account manager )
+rram fork and ui pass: this repository 
