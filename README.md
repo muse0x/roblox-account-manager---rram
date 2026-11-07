@@ -1,6 +1,6 @@
 > **fork of the fork** — rram is a modified fork of [bruhger12/roblox-account-manager-reimagined](https://github.com/bruhger12/Roblox-Account-Manager-Reimagined), which is itself a fork of [ic3w0lf22/roblox-account-manager](https://github.com/ic3w0lf22/Roblox-Account-Manager). same purpose, new shell, new branding and a quality-of-life pass
 
-# rram (re-ram) 🎮
+# rram (remaster roblox account manager ) 🎮
 
 desktop account manager for roblox 
 
