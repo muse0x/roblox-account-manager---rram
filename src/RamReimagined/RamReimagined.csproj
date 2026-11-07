@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>RamReimagined</RootNamespace>
+    <AssemblyName>RRAM</AssemblyName>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <AssemblyTitle>RRAM</AssemblyTitle>
+    <Product>RRAM</Product>
+    <Description>RE-RAM — Reimagine Roblox Account Manager</Description>
+    <ApplicationIcon>Assets\RRAM.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
+    <Authors>bruhger12</Authors>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- Custom-painted controls are built in code, not by the WinForms designer. -->
+    <NoWarn>$(NoWarn);WFO1000</NoWarn>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3277</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\RRAM-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
