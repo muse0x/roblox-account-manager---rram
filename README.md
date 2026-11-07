@@ -1,10 +1,8 @@
-> **fork of the fork** — rram is a modified fork of [bruhger12/roblox-account-manager-reimagined](https://github.com/bruhger12/Roblox-Account-Manager-Reimagined), which is itself a fork of [ic3w0lf22/roblox-account-manager](https://github.com/ic3w0lf22/Roblox-Account-Manager). same purpose, new shell, new branding and a quality-of-life pass.
+> **fork of the fork** — rram is a modified fork of [bruhger12/roblox-account-manager-reimagined](https://github.com/bruhger12/Roblox-Account-Manager-Reimagined), which is itself a fork of [ic3w0lf22/roblox-account-manager](https://github.com/ic3w0lf22/Roblox-Account-Manager). same purpose, new shell, new branding and a quality-of-life pass
 
 # rram (re-ram) 🎮
 
-desktop account manager for roblox because juggling alt accounts should not feel like a second job.
-
-built with c# + .net 9 + winforms + webview2. no bloat (jk)
+desktop account manager for roblox 
 
 <p align="center"><img src="screenshots/rram-icon.png" width="88" alt="rram icon" /></p>
 
