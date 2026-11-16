@@ -14,7 +14,7 @@
     <Product>RRAM</Product>
     <Description>RE-RAM — Reimagine Roblox Account Manager</Description>
     <ApplicationIcon>Assets\RRAM.ico</ApplicationIcon>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>bruhger12</Authors>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <!-- Custom-painted controls are built in code, not by the WinForms designer. -->

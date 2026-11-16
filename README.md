@@ -16,7 +16,7 @@ desktop account manager for roblox
 </p>
 <p align="center">
   <img src="screenshots/tools.png" width="49%" alt="tools" />
-  <img src="screenshots/settings.png" width="49%" alt="settings" />
+  <img src="screenshots/settings-resources.jpg" width="49%" alt="settings and Roblox resource controls" />
 </p>
 
 ---
@@ -28,6 +28,7 @@ desktop account manager for roblox
 - **readable account cards**: one-line cards with avatar, handle, presence, batch launch and a context menu for the rest.
 - **server browser + launcher**: public servers with population, ping and fps; join as any selected account.
 - **version manager**: pin an installed roblox build, or pull current / previous / specific RDD packages.
+- **resource controls**: optionally trim Roblox working sets on a schedule and set per-client memory and shared CPU caps.
 - **no injected client code**: multi-instance only holds the two kernel objects roblox uses; fast flags are backed up and reversible.
 
 ---
