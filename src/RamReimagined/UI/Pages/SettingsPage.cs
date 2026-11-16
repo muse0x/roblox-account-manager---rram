@@ -14,6 +14,10 @@ internal sealed class SettingsPage : PageView
     private readonly ToggleSwitch _lowGraphics = new();
     private readonly ToggleSwitch _tile = new();
     private readonly ToggleSwitch _confirm = new();
+    private readonly ToggleSwitch RobloxWorkingSetCleanup = new();
+    private readonly TextField RobloxCleanupInterval = new("1 - 120");
+    private readonly TextField RobloxCpuLimit = new("0 - 100");
+    private readonly TextField RobloxMemoryLimit = new("0 = off");
     private readonly PillButton _save = new("Save settings", IconKind.Check) { Kind = ButtonKind.Primary, Width = 160, Height = 38 };
     private readonly List<AccentSwatch> _swatches = new();
 
@@ -27,6 +31,10 @@ internal sealed class SettingsPage : PageView
         _lowGraphics.Checked = app.Settings.LowGraphics;
         _tile.Checked = app.Settings.TileWindows;
         _confirm.Checked = app.Settings.ConfirmBatchLaunch;
+        RobloxWorkingSetCleanup.Checked = app.Settings.RobloxWorkingSetCleanupEnabled;
+        RobloxCleanupInterval.Text = app.Settings.RobloxCleanupIntervalMinutes.ToString();
+        RobloxCpuLimit.Text = app.Settings.RobloxCpuLimitPercent.ToString();
+        RobloxMemoryLimit.Text = app.Settings.RobloxMemoryLimitMb.ToString();
 
         _save.Click += (_, _) => Save();
 
@@ -67,6 +75,14 @@ internal sealed class SettingsPage : PageView
             ("Servers fetched per page", _serverPage)
         }));
 
+        _stack.Controls.Add(BuildCard("Roblox resource control", new (string, Control)[]
+        {
+            ("Periodic working-set cleanup", RobloxWorkingSetCleanup),
+            ("Cleanup interval (minutes)", RobloxCleanupInterval),
+            ("CPU hard cap (%, shared, 0 or 100 = off)", RobloxCpuLimit),
+            ("RAM hard cap per client (MB, 0 = off)", RobloxMemoryLimit)
+        }, "Cleanup trims resident RAM only. Hard caps limit Roblox commit/CPU and can destabilize it."));
+
         _stack.Controls.Add(BuildAccentCard(accentFlow));
         _stack.Controls.Add(BuildPathsCard());
 
@@ -83,9 +99,9 @@ internal sealed class SettingsPage : PageView
 
     public override IReadOnlyList<Control> Actions => new Control[] { _save };
 
-    private RoundedCard BuildCard(string title, IReadOnlyList<(string Label, Control Control)> rows)
+    private RoundedCard BuildCard(string title, IReadOnlyList<(string Label, Control Control)> rows, string? Note = null)
     {
-        var card = new RoundedCard { Height = 62 + rows.Count * 50 };
+        var card = new RoundedCard { Height = 62 + rows.Count * 50 + (Note is null ? 0 : 42) };
         card.Controls.Add(new SectionTitle(title) { Location = new Point(20, 18) });
 
         var table = new TableLayoutPanel
@@ -134,7 +150,26 @@ internal sealed class SettingsPage : PageView
         }
 
         card.Controls.Add(table);
-        card.Resize += (_, _) => table.Width = card.Width - 40;
+        MutedLabel? NoteLabel = null;
+        if (Note is not null)
+        {
+            NoteLabel = new MutedLabel(Note)
+            {
+                Location = new Point(20, 54 + rows.Count * 50),
+                Size = new Size(card.Width - 40, 34),
+                AutoEllipsis = true
+            };
+            card.Controls.Add(NoteLabel);
+        }
+
+        card.Resize += (_, _) =>
+        {
+            table.Width = card.Width - 40;
+            if (NoteLabel is not null)
+            {
+                NoteLabel.Width = card.Width - 40;
+            }
+        };
         return card;
     }
 
@@ -206,7 +241,14 @@ internal sealed class SettingsPage : PageView
         App.Settings.LowGraphics = _lowGraphics.Checked;
         App.Settings.TileWindows = _tile.Checked;
         App.Settings.ConfirmBatchLaunch = _confirm.Checked;
+        App.Settings.RobloxWorkingSetCleanupEnabled = RobloxWorkingSetCleanup.Checked;
+        App.Settings.RobloxCleanupIntervalMinutes = (int)Math.Clamp(ParseLong(RobloxCleanupInterval.Text, 5), 1, 120);
+        App.Settings.RobloxCpuLimitPercent = (int)Math.Clamp(ParseLong(RobloxCpuLimit.Text, 0), 0, 100);
+        var MemoryLimitMb = (int)Math.Clamp(ParseLong(RobloxMemoryLimit.Text, 0), 0, 131_072);
+        App.Settings.RobloxMemoryLimitMb = MemoryLimitMb is > 0 and < 512 ? 512 : MemoryLimitMb;
         App.Settings.Save();
+
+        var ResourceResult = App.RobloxResources.ApplySettings();
 
         if (_multi.Checked && !App.Launcher.MultiInstance.Active)
         {
@@ -220,6 +262,15 @@ internal sealed class SettingsPage : PageView
         _refresh.Text = App.Settings.RefreshSeconds.ToString();
         _stagger.Text = App.Settings.LaunchStaggerSeconds.ToString("0.#");
         _serverPage.Text = App.Settings.ServerPageSize.ToString();
+        RobloxCleanupInterval.Text = App.Settings.RobloxCleanupIntervalMinutes.ToString();
+        RobloxCpuLimit.Text = App.Settings.RobloxCpuLimitPercent.ToString();
+        RobloxMemoryLimit.Text = App.Settings.RobloxMemoryLimitMb.ToString();
+        if (ResourceResult.Failed > 0)
+        {
+            App.Toast($"Settings saved, but resource limits could not be applied to {ResourceResult.Failed} Roblox client(s).", ToastKind.Warning);
+            return;
+        }
+
         App.Toast("Settings saved.", ToastKind.Success);
     }
 

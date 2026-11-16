@@ -18,6 +18,7 @@ internal sealed class MainForm : Form
     private readonly WindowButton MaximizeButton;
     private readonly WindowButton CloseButton;
     private readonly System.Windows.Forms.Timer _presenceTimer;
+    private readonly System.Windows.Forms.Timer RobloxResourceTimer;
     private readonly List<(PageView Page, NavRailItem Item)> _pages = new();
     private PageView? _current;
     private int PageOffset;
@@ -154,6 +155,9 @@ internal sealed class MainForm : Form
         _presenceTimer = new System.Windows.Forms.Timer { Interval = 60_000 };
         _presenceTimer.Tick += async (_, _) => await RefreshPresenceAsync();
         _presenceTimer.Start();
+        RobloxResourceTimer = new System.Windows.Forms.Timer { Interval = 2_000 };
+        RobloxResourceTimer.Tick += (_, _) => _app.RobloxResources.Tick();
+        RobloxResourceTimer.Start();
 
         Load += (_, _) =>
         {            UpdateRegion();
@@ -181,6 +185,8 @@ internal sealed class MainForm : Form
         {
             _presenceTimer.Stop();
             _presenceTimer.Dispose();
+            RobloxResourceTimer.Stop();
+            RobloxResourceTimer.Dispose();
             _app.Dispose();
         };
 

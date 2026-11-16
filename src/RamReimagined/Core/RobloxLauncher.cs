@@ -12,11 +12,12 @@ public sealed record LaunchResult(bool Ok, string Message, int? ProcessId);
 /// </summary>
 public sealed class RobloxLauncher
 {
-    public RobloxLauncher(RobloxApi api, AccountStore store, AppSettings settings)
+    public RobloxLauncher(RobloxApi api, AccountStore store, AppSettings settings, RobloxResourceManager RobloxResources)
     {
         Api = api;
         Store = store;
         Settings = settings;
+        this.RobloxResources = RobloxResources;
         MultiInstance = new MultiInstanceLock();
     }
 
@@ -25,6 +26,8 @@ public sealed class RobloxLauncher
     public AccountStore Store { get; }
 
     public AppSettings Settings { get; }
+
+    public RobloxResourceManager RobloxResources { get; }
 
     public MultiInstanceLock MultiInstance { get; }
 
@@ -120,9 +123,14 @@ public sealed class RobloxLauncher
                 WorkingDirectory = Path.GetDirectoryName(exe) ?? AppPaths.LocalRobloxDirectory
             };
 
-            var process = Process.Start(info);
+            using var Client = Process.Start(info);
+            if (Client is not null)
+            {
+                RobloxResources.TrackProcess(Client);
+            }
+
             Store.TouchLaunched(account);
-            return new LaunchResult(true, $"Launched {account.Name}", process?.Id);
+            return new LaunchResult(true, $"Launched {account.Name}", Client?.Id);
         }
         catch (Exception ex)
         {

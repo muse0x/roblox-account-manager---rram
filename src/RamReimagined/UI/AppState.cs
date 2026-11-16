@@ -14,7 +14,9 @@ internal sealed class AppState : IDisposable
         Store = new AccountStore();
         Store.Load();
         Avatars = new AvatarCache(Api);
-        Launcher = new RobloxLauncher(Api, Store, Settings);
+        RobloxResources = new RobloxResourceManager(Settings);
+        Launcher = new RobloxLauncher(Api, Store, Settings, RobloxResources);
+        RobloxResources.ApplySettings();
 
         if (Settings.KeepMultiInstance)
         {
@@ -33,6 +35,8 @@ internal sealed class AppState : IDisposable
     public AppSettings Settings { get; }
 
     public RobloxLauncher Launcher { get; }
+
+    public RobloxResourceManager RobloxResources { get; }
 
     public AvatarCache Avatars { get; }
 
@@ -128,6 +132,7 @@ internal sealed class AppState : IDisposable
     public void Dispose()
     {
         Launcher.MultiInstance.Dispose();
+        RobloxResources.Dispose();
         Api.Dispose();
     }
 }

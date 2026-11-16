@@ -106,6 +106,14 @@ public sealed class AppSettings
 
     public int ServerPageSize { get; set; } = 100;
 
+    public bool RobloxWorkingSetCleanupEnabled { get; set; }
+
+    public int RobloxCleanupIntervalMinutes { get; set; } = 5;
+
+    public int RobloxCpuLimitPercent { get; set; }
+
+    public int RobloxMemoryLimitMb { get; set; }
+
     public Dictionary<string, string> FastFlags { get; set; } = new();
 
     public int WindowWidth { get; set; } = 1200;
