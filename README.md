@@ -16,7 +16,7 @@ desktop account manager for roblox
 </p>
 <p align="center">
   <img src="screenshots/tools.png" width="49%" alt="tools" />
-  <img src="screenshots/settings-resources.jpg" width="49%" alt="settings and Roblox resource controls" />
+  <img src="screenshots/settings-resources.png" width="49%" alt="settings and Roblox resource controls" />
 </p>
 
 ---
